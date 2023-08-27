@@ -81,7 +81,9 @@ function clickCounter(){
       console.log(clickCnt);
 
       colorCheck.push(e.target.classList[0]);
+      cards.push(e.target);
       console.log("The colors are:", colorCheck);
+      console.log(cards);
     };
 
     //if statements that check for match
@@ -90,18 +92,21 @@ function clickCounter(){
         console.log("Match!");
         clickCnt = 0;
         colorCheck = [];
+        cards = [];
       }else {
         console.log("No Match!");
         clickCnt = 0;
         console.log("Removing Colors");
+        //Couldn't figure out how to reference function, so here it is inline
         setTimeout(() => {
           console.log("removed");
           const color1 = document.getElementsByClassName(colorCheck[0])[0];
           const color2 = document.getElementsByClassName(colorCheck[1])[0];
 
-          color1.style.removeProperty("background-color");
-          color2.style.removeProperty("background-color");
+          cards[0].style.removeProperty("background-color");
+          cards[1].style.removeProperty("background-color");
           colorCheck = [];
+          cards = [];
         }, 1000);
       };
     };
