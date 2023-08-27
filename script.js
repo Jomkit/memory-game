@@ -1,4 +1,9 @@
 const gameContainer = document.getElementById("game");
+const startBtn = document.getElementById('start-button');
+const splashScreen = document.querySelector('.splash-container');
+const clickScore = document.querySelector('#score');
+
+let score = 0;
 
 const COLORS = [
   "red",
@@ -12,6 +17,13 @@ const COLORS = [
   "orange",
   "purple"
 ];
+
+//Start Menu
+startBtn.addEventListener('click', function(){
+  splashScreen.style.opacity = 0;
+  setTimeout(()=>{
+    splashScreen.classList.add('hidden')},610)
+  });
 
 // here is a helper function to shuffle an array
 // it returns the same array with values shuffled
@@ -65,12 +77,13 @@ function handleCardClick(event) {
   //console.log("you just clicked", event.target);
   const color = event.target.classList[0];
   event.target.style.setProperty("background-color", color);
-  
+  score++;
+  clickScore.innerText = score;
 }
 
 function clickCounter(){
   let clickCnt = 0;
-  let duplicateCnt = 0;
+  //let duplicateCnt = 0;
   let colorCheck = [];
   let cards = [];
   
@@ -82,13 +95,15 @@ function clickCounter(){
       clickCnt ++;
       console.log("count", clickCnt);
       if(e.target.classList.contains("match")){
-        console.log("Wait, this one's already matched");
+        //console.log("Wait, this one's already matched");
         clickCnt --;
-        console.log("count after match", clickCnt);
+        score--;
+        //console.log("count after match", clickCnt);
         return;
       }else if(e.target.classList.contains("duplicate")){ //Duplicate aka same card pressed
         console.log("Duplicate"); 
         clickCnt--;
+        score--;
         return;
       }else {
         e.target.classList.add("duplicate");                
@@ -105,7 +120,7 @@ function clickCounter(){
 
       stopClicks();
       if(colorCheck[0] === colorCheck[1]){
-        console.log("Match!");
+        //console.log("Match!");
 
         for(let card of cards){
           card.classList.add("match");
@@ -115,9 +130,9 @@ function clickCounter(){
         colorCheck = [];
         cards = [];
       }else {
-        console.log("No Match!");
+        //console.log("No Match!");
         clickCnt = 0;
-        console.log("Removing Colors");
+        //console.log("Removing Colors");
         resetCards(cards);
         colorCheck = [];
         cards = [];
@@ -130,17 +145,14 @@ function clickCounter(){
 
 function stopClicks(){
   gameContainer.classList.add("stopClicks");
-  console.log("Stop Clicked");
-  // while(stopClick){
-  //   document.addEventListener('click', e => e.preventDefault());
-  // }
+  //console.log("Stop Clicked");
+
   setTimeout(()=>{
     gameContainer.classList.toggle("stopClicks");
   }, 1000)
 }
 
 function resetCards(cards){
-  
   setTimeout(() => {
     console.log("removed");
     
