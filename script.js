@@ -97,11 +97,13 @@ function clickCounter(){
       colorCheck.push(e.target.classList[0]);
       cards.push(e.target);
       console.log("The colors are:", colorCheck);
-      console.log(cards);
+      //console.log(cards);
     };
 
     //if statements that check for match
     if(clickCnt == 2){
+
+      stopClicks();
       if(colorCheck[0] === colorCheck[1]){
         console.log("Match!");
 
@@ -126,6 +128,16 @@ function clickCounter(){
   });
 }
 
+function stopClicks(){
+  gameContainer.classList.add("stopClicks");
+  console.log("Stop Clicked");
+  // while(stopClick){
+  //   document.addEventListener('click', e => e.preventDefault());
+  // }
+  setTimeout(()=>{
+    gameContainer.classList.toggle("stopClicks");
+  }, 1000)
+}
 
 function resetCards(cards){
   
