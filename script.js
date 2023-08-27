@@ -77,8 +77,19 @@ function clickCounter(){
     //console.log("You just clicked", e.target);
     if(e.target.classList[1] === "card"){
       //console.log("You clicked a card");
+      e.target.classList.add("duplicate");                //Need to solve this issue of pressing same card rep.
       clickCnt ++;
-      console.log(clickCnt);
+      console.log("count", clickCnt);
+      if(e.target.classList.contains("match")){
+        console.log("Wait, this one's already matched");
+        clickCnt --;
+        console.log("count after match", clickCnt);
+        return;
+      }else if(e.target.classList.contains("duplicate")){ //Duplicate aka same card pressed
+        console.log("Duplicate");                         
+        clickCnt--;
+        return;
+      }
 
       colorCheck.push(e.target.classList[0]);
       cards.push(e.target);
@@ -90,6 +101,11 @@ function clickCounter(){
     if(clickCnt == 2){
       if(colorCheck[0] === colorCheck[1]){
         console.log("Match!");
+
+        for(let card of cards){
+          card.classList.add("match");
+        }
+        
         clickCnt = 0;
         colorCheck = [];
         cards = [];
@@ -100,9 +116,7 @@ function clickCounter(){
         //Couldn't figure out how to reference function, so here it is inline
         setTimeout(() => {
           console.log("removed");
-          const color1 = document.getElementsByClassName(colorCheck[0])[0];
-          const color2 = document.getElementsByClassName(colorCheck[1])[0];
-
+          
           cards[0].style.removeProperty("background-color");
           cards[1].style.removeProperty("background-color");
           colorCheck = [];
