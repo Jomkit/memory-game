@@ -46,8 +46,8 @@ function createDivsForColors(colorArray) {
     // create a new div
     const newDiv = document.createElement("div");
 
-    // give it a class attribute for the value we are looping over
-    newDiv.classList.add(color);
+    // give it a class attribute for the value we are looping over and add .card and a random color
+    newDiv.classList.add("card", color);
 
     // call a function handleCardClick when a div is clicked on
     newDiv.addEventListener("click", handleCardClick);
