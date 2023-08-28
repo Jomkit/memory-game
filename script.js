@@ -91,14 +91,8 @@ function clickCounter(){
         clickCnt--;
         return;
       }else {
-        e.target.classList.add("duplicate");                //Need to solve this issue of pressing same card rep.
-        duplicateCnt++;
+        e.target.classList.add("duplicate");                
       }
-
-      // if(duplicateCnt == 2){
-      //   duplicateCnt = 0;
-      //   clickCnt = 0;
-      // }
 
       colorCheck.push(e.target.classList[0]);
       cards.push(e.target);
@@ -122,8 +116,7 @@ function clickCounter(){
         console.log("No Match!");
         clickCnt = 0;
         console.log("Removing Colors");
-        //Couldn't figure out how to reference function, so here it is inline
-        resetCards(cards, colorCheck);
+        resetCards(cards);
         colorCheck = [];
         cards = [];
         
