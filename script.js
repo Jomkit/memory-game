@@ -70,6 +70,7 @@ function handleCardClick(event) {
 
 function clickCounter(){
   let clickCnt = 0;
+  let duplicateCnt = 0;
   let colorCheck = [];
   let cards = [];
   
@@ -77,7 +78,7 @@ function clickCounter(){
     //console.log("You just clicked", e.target);
     if(e.target.classList[1] === "card"){
       //console.log("You clicked a card");
-      e.target.classList.add("duplicate");                //Need to solve this issue of pressing same card rep.
+      
       clickCnt ++;
       console.log("count", clickCnt);
       if(e.target.classList.contains("match")){
@@ -86,10 +87,18 @@ function clickCounter(){
         console.log("count after match", clickCnt);
         return;
       }else if(e.target.classList.contains("duplicate")){ //Duplicate aka same card pressed
-        console.log("Duplicate");                         
+        console.log("Duplicate"); 
         clickCnt--;
         return;
+      }else {
+        e.target.classList.add("duplicate");                //Need to solve this issue of pressing same card rep.
+        duplicateCnt++;
       }
+
+      // if(duplicateCnt == 2){
+      //   duplicateCnt = 0;
+      //   clickCnt = 0;
+      // }
 
       colorCheck.push(e.target.classList[0]);
       cards.push(e.target);
@@ -114,14 +123,10 @@ function clickCounter(){
         clickCnt = 0;
         console.log("Removing Colors");
         //Couldn't figure out how to reference function, so here it is inline
-        setTimeout(() => {
-          console.log("removed");
-          
-          cards[0].style.removeProperty("background-color");
-          cards[1].style.removeProperty("background-color");
-          colorCheck = [];
-          cards = [];
-        }, 1000);
+        resetCards(cards, colorCheck);
+        colorCheck = [];
+        cards = [];
+        
       };
     };
 
@@ -129,15 +134,20 @@ function clickCounter(){
 }
 
 
-// function resetCards(array){
-//   console.log("removed");
-//   const color1 = document.getElementsByClassName(array[0])[0];
-//   const color2 = document.getElementsByClassName(array[1])[0];
+function resetCards(cards){
+  
+  setTimeout(() => {
+    console.log("removed");
+    
+    cards[0].style.removeProperty("background-color");
+    cards[0].classList.remove("duplicate");
+    cards[1].style.removeProperty("background-color");
+    cards[1].classList.remove("duplicate");
+    return cards;
+  }, 1000);
 
-//   color1.style.removeProperty("background-color");
-//   color2.style.removeProperty("background-color");
+}
 
-// }
 
 // when the DOM loads
 createDivsForColors(shuffledColors);
