@@ -29,6 +29,34 @@ const COLORS = [
   "purple"
 ];
 
+const COLORSset = genCOLORS(randomNumberCards());
+
+//Must generate a set of cards
+function genCOLORS(numberOfCards){
+  let randomCOLORS = {};
+  for(let i=0; i < numberOfCards; i++){
+    const color = randomRGB();
+    randomCOLORS[i] = color;
+  }
+  return randomCOLORS;
+}
+//rgb in hex
+function randomRGB(){
+  let b = Math.floor(Math.random()*256);
+  let r = Math.floor(Math.random()*256);
+  let g = Math.floor(Math.random()*256);
+
+  return `rgb(${r},${g},${b})`;
+}
+
+//random numbers generated within a range of 10 starting from 4
+function randomNumberCards(){
+  const range = 10;
+  const startNum = 4;
+  const randomNumber = Math.floor(Math.random()*range/2)*2 + startNum;
+  return randomNumber;
+}
+
 //Start Menu
 if(sessionStorage.getItem("splashHidden") == null){
   startBtn.addEventListener('click', function(){
@@ -42,7 +70,16 @@ if(sessionStorage.getItem("splashHidden") == null){
 // here is a helper function to shuffle an array
 // it returns the same array with values shuffled
 // it is based on an algorithm called Fisher Yates if you want ot research more
-function shuffle(array) {
+function shuffle(obj) {
+  let array2 = Object.getOwnPropertyNames(obj);
+  let array = [];
+  //Double the size of array to give it double sets
+  for(let j = 0; j < 2; j++){
+    for(let i = 0; i<array2.length; i++){
+      array.push(array2[i]);
+    }
+  }
+  
   let counter = array.length;
 
   // While there are elements in the array
@@ -62,7 +99,7 @@ function shuffle(array) {
   return array;
 }
 
-let shuffledColors = shuffle(COLORS);
+let shuffledColors = shuffle(COLORSset);
 
 // this function loops over the array of colors
 // it creates a new div and gives it a class with the value of the color
@@ -90,12 +127,12 @@ function handleCardClick(event) {
   // you can use event.target to see which element was clicked
   //console.log("you just clicked", event.target);
   const color = event.target.classList[0];
-  event.target.style.setProperty("background-color", color);
+  event.target.style.setProperty("background-color", COLORSset[color]);
   score++;
   clickScore.innerText = score;
 }
 
-function clickCounter(){
+function clickCounter(){ 
   let clickCnt = 0;
   let matches = 0;
 
@@ -147,7 +184,7 @@ function clickCounter(){
         colorCheck = [];
         cards = [];
 
-        if(matches*2 == COLORS.length){
+        if(matches*2 == shuffledColors.length){
           console.log("Game Over");
           gameOver()
         };
