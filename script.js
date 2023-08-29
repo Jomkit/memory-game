@@ -2,9 +2,20 @@ const gameContainer = document.getElementById("game");
 const startBtn = document.getElementById('start-button');
 const splashScreen = document.querySelector('.splash-container');
 const clickScore = document.querySelector('#score');
+const lowScore = document.querySelector('#best-score');
+const recordLowScore = localStorage.getItem("lowestScore");
+
+if(recordLowScore == null){
+  lowScore.innerText = "";
+}else {
+  lowScore.innerText = recordLowScore;
+}
 
 let score = 0;
 
+splashScreen.classList.add(sessionStorage.getItem("splashHidden"));
+//Implementing random colors: there's two sets of colors below to make doubles, perhaps could just 
+//run color randomizer code twice to get sets
 const COLORS = [
   "red",
   "blue",
@@ -19,11 +30,14 @@ const COLORS = [
 ];
 
 //Start Menu
-startBtn.addEventListener('click', function(){
-  splashScreen.style.opacity = 0;
-  setTimeout(()=>{
-    splashScreen.classList.add('hidden')},610)
-  });
+if(sessionStorage.getItem("splashHidden") == null){
+  startBtn.addEventListener('click', function(){
+    splashScreen.style.opacity = 0;
+    setTimeout(()=>{
+      splashScreen.classList.add('hidden')},610); 
+    });
+    sessionStorage.setItem("splashHidden", "hidden");
+}
 
 // here is a helper function to shuffle an array
 // it returns the same array with values shuffled
@@ -83,7 +97,8 @@ function handleCardClick(event) {
 
 function clickCounter(){
   let clickCnt = 0;
-  //let duplicateCnt = 0;
+  let matches = 0;
+
   let colorCheck = [];
   let cards = [];
   
@@ -126,9 +141,17 @@ function clickCounter(){
           card.classList.add("match");
         }
         
+        matches++;
+        console.log("matches", matches);
         clickCnt = 0;
         colorCheck = [];
         cards = [];
+
+        if(matches*2 == COLORS.length){
+          console.log("Game Over");
+          gameOver()
+        };
+        
       }else {
         //console.log("No Match!");
         clickCnt = 0;
@@ -150,6 +173,33 @@ function stopClicks(){
   setTimeout(()=>{
     gameContainer.classList.toggle("stopClicks");
   }, 1000)
+}
+
+function gameOver(){
+  const gameOverDiv = document.createElement('div');
+  const newScore = document.createElement('div');
+  const resetBtn = document.createElement('button');
+
+  
+  resetBtn.setAttribute("id", "reset");
+  resetBtn.innerText = "RESET";
+  // scoreDiv.setAttribute("class", "game-over");
+  //bestScore.setAttribute("id", "best-score");
+
+  document.body.append(gameOverDiv);
+  gameOverDiv.append(resetBtn);
+
+  //Need to compare old score and new score to see which is better aka lower
+  if(recordLowScore === null || score < recordLowScore) {
+    localStorage.setItem("lowestScore", score);
+    newScore.innerText = `New Lowest Score: ${localStorage.getItem("lowestScore")}`;
+    gameOverDiv.append(newScore);
+  }
+
+  resetBtn.addEventListener('click', ()=>{
+    window.location.reload();
+  });
+    
 }
 
 function resetCards(cards){
